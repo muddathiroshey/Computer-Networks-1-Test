@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Computer Networks 1 — Full Practice</title>
+<title>Computer Networks 1 — Lectures 1, 2, 3</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -29,6 +29,7 @@
     --shadow-lg: 0 12px 40px rgba(13,17,23,0.18);
     --radius: 10px;
     --radius-sm: 6px;
+    /* difficulty colors */
     --easy: #16a34a;
     --easy-light: #dcfce7;
     --medium: #d97706;
@@ -49,6 +50,7 @@
     line-height: 1.6;
   }
 
+  /* HERO */
   .hero {
     background: var(--ink);
     color: white;
@@ -64,6 +66,18 @@
       radial-gradient(ellipse 55% 90% at 95% 40%, rgba(14,165,233,0.22) 0%, transparent 65%),
       radial-gradient(ellipse 40% 60% at 5% 90%, rgba(20,184,166,0.14) 0%, transparent 55%),
       radial-gradient(ellipse 30% 40% at 60% 10%, rgba(14,165,233,0.08) 0%, transparent 50%);
+  }
+  /* circuit lines decoration */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 380px; height: 100%;
+    background-image:
+      linear-gradient(rgba(14,165,233,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: linear-gradient(to left, rgba(0,0,0,0.4), transparent);
   }
   .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-eyebrow {
@@ -89,7 +103,20 @@
   }
   .hero-title em { font-style: normal; color: var(--accent); }
   .hero-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 32px; font-weight: 300; letter-spacing: 0.03em; }
-  
+  .hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num { font-family: 'DM Sans', sans-serif; font-size: 26px; font-weight: 600; color: rgba(255,255,255,0.85); line-height: 1; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'DM Sans', sans-serif; }
+  .hero-disclaimer {
+    margin-top: 20px;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px; padding: 7px 12px;
+    font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 400;
+  }
+  .hero-disclaimer span { color: rgba(255,255,255,0.65); }
+
+  /* TABS */
   .tabs-wrap {
     background: white;
     border-bottom: 1px solid var(--border);
@@ -100,11 +127,12 @@
   }
   .tabs-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: stretch; overflow-x: auto; }
   .tab-btn {
-    flex: 1; padding: 0 15px; height: 48px;
+    flex: 1; padding: 0 20px; height: 48px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
     font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
     color: var(--ink-muted); cursor: pointer; border: none; background: transparent;
     border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap;
+    letter-spacing: 0.02em;
   }
   .tab-btn:hover { color: var(--ink); background: var(--paper-warm); }
   .tab-btn.active { color: var(--ink); border-bottom-color: var(--accent); }
@@ -118,6 +146,7 @@
   .tab-dot.hard { background: var(--hard); }
   .tab-dot.ch2 { background: var(--ch2); }
 
+  /* PROGRESS */
   .progress-wrap {
     background: var(--paper-warm);
     border-bottom: 1px solid var(--border);
@@ -127,29 +156,43 @@
     z-index: 99;
   }
   .progress-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
-  .progress-text { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-muted); min-width: 120px; }
+  .progress-text { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-muted); white-space: nowrap; min-width: 120px; }
   .progress-track { flex: 1; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; transition: width 0.4s ease; width: 0%; }
-  .progress-fill.easy { background: var(--easy); }
-  .progress-fill.medium { background: var(--medium); }
-  .progress-fill.hard { background: var(--hard); }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .progress-fill.easy { background: linear-gradient(90deg, var(--easy), var(--teal)); }
+  .progress-fill.medium { background: linear-gradient(90deg, var(--medium), #f59e0b); }
+  .progress-fill.hard { background: linear-gradient(90deg, var(--hard), #f97316); }
   .progress-fill.ch2 { background: var(--ch2); }
+  .progress-pct { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; min-width: 36px; text-align: right; }
+  .progress-pct.easy { color: var(--easy); }
+  .progress-pct.medium { color: var(--medium); }
+  .progress-pct.hard { color: var(--hard); }
+  .progress-pct.ch2 { color: var(--ch2); }
 
+  /* MAIN */
   .main { max-width: 900px; margin: 0 auto; padding: 36px 40px 80px; }
   .section-panel { display: none; }
   .section-panel.active { display: block; }
+
   .section-header { display: flex; align-items: center; gap: 14px; margin: 0 0 24px; }
   .section-badge {
     padding: 4px 14px; border-radius: 99px;
     font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
-    text-transform: uppercase;
+    text-transform: uppercase; letter-spacing: 0.08em;
   }
   .section-badge.easy { background: var(--easy-light); color: var(--easy); }
   .section-badge.medium { background: var(--medium-light); color: var(--medium); }
   .section-badge.hard { background: var(--hard-light); color: var(--hard); }
   .section-badge.ch2 { background: var(--ch2-light); color: var(--ch2); }
-  .section-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .section-meta { font-size: 12px; color: var(--ink-muted); margin-top: 1px; font-family: 'Space Mono', monospace; }
 
+  /* INNER DISCLAIMER */
   .inner-disclaimer {
     margin-bottom: 24px;
     padding: 10px 16px;
@@ -164,6 +207,7 @@
     font-weight: 500;
   }
 
+  /* CARDS */
   .q-card {
     background: var(--paper-card);
     border: 1px solid var(--border);
@@ -171,27 +215,60 @@
     padding: 22px 24px;
     margin-bottom: 12px;
     box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, border-color 0.2s;
   }
+  .q-card:hover { box-shadow: var(--shadow-md); }
   .q-card.correct-card { border-color: #86efac; background: #f0fdf4; }
   .q-card.wrong-card { border-color: #fca5a5; background: #fff5f5; }
+
   .q-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
   .q-badge {
     background: var(--ink); color: white;
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    padding: 3px 9px; border-radius: 4px;
+    font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+    padding: 3px 9px; border-radius: 4px; flex-shrink: 0; margin-top: 3px;
+    letter-spacing: 0.04em;
   }
+  .q-text { font-size: 14.5px; color: var(--ink); line-height: 1.65; font-weight: 400; }
+
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
     display: flex; align-items: flex-start; gap: 12px;
     padding: 10px 14px; border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s;
+    border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; position: relative;
+    user-select: none;
   }
   .option:hover { border-color: var(--accent); background: var(--accent-light); }
+  .option input[type=radio] { display: none; }
+  .option-dot {
+    width: 18px; height: 18px; border: 1.5px solid var(--border-strong);
+    border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .option-dot::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); opacity: 0; transition: opacity 0.15s;
+  }
   .option.selected { border-color: var(--accent); background: var(--accent-light); }
-  .option.correct-opt { border-color: var(--success); background: var(--success-light); color: var(--success); }
-  .option.wrong-opt { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
-  .option input { display: none; }
-  
+  .option.selected .option-dot { border-color: var(--accent); }
+  .option.selected .option-dot::after { opacity: 1; }
+  .option.correct-opt { border-color: var(--success); background: var(--success-light); pointer-events: none; }
+  .option.correct-opt .option-dot { border-color: var(--success); }
+  .option.correct-opt .option-dot::after { opacity: 1; background: var(--success); }
+  .option.correct-opt .option-text { color: var(--success); font-weight: 500; }
+  .option.correct-opt .option-letter { color: var(--success); }
+  .option.wrong-opt { border-color: var(--danger); background: var(--danger-light); pointer-events: none; }
+  .option.wrong-opt .option-dot { border-color: var(--danger); }
+  .option.wrong-opt .option-dot::after { opacity: 1; background: var(--danger); }
+  .option.wrong-opt .option-text { color: var(--danger); }
+  .option.wrong-opt .option-letter { color: var(--danger); }
+  .option-letter { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: var(--ink-muted); margin-top: 3px; flex-shrink: 0; min-width: 14px; }
+  .option-text { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+
+  .q-feedback { display: none; margin-top: 10px; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 4px; width: fit-content; font-family: 'Space Mono', monospace; }
+  .q-feedback.show-correct { display: block; background: var(--success-light); color: var(--success); }
+  .q-feedback.show-wrong { display: block; background: var(--danger-light); color: var(--danger); }
+
+  /* HINT SYSTEM */
   .hint-container { margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 10px; }
   .hint-btn {
     background: var(--paper-warm); border: 1px solid var(--border-strong);
@@ -204,17 +281,67 @@
     border-left: 3px solid #eab308; font-size: 12px; font-family: 'Space Mono', monospace; color: #854d0e;
   }
 
-  .actions { display: flex; gap: 12px; margin-top: 36px; }
+  /* SCORE AREA */
+  .actions { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
   .btn-primary {
     background: var(--accent); color: white; border: none;
     padding: 12px 30px; border-radius: var(--radius-sm);
-    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.35); letter-spacing: 0.02em;
   }
+  .btn-primary:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: white; color: var(--ink-soft); border: 1.5px solid var(--border-strong);
+    padding: 12px 26px; border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--ink-soft); color: var(--ink); background: var(--paper-warm); }
+
   .score-card {
     display: none; background: var(--ink); color: white;
-    border-radius: var(--radius); padding: 32px; margin-top: 36px;
+    border-radius: var(--radius); padding: 32px 36px; margin-top: 36px;
+    position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
   }
-  .score-big { font-family: 'Syne', sans-serif; font-size: 54px; font-weight: 800; color: var(--accent); }
+  .score-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 90% 40%, rgba(14,165,233,0.22) 0%, transparent 65%);
+  }
+  .score-card-inner { position: relative; }
+  .score-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-bottom: 28px; }
+  .score-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+  .score-big { font-family: 'Syne', sans-serif; font-size: 54px; font-weight: 800; line-height: 1; color: white; }
+  .score-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+  .score-grade { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .score-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .score-section { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .score-section-label { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.38); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.12em; }
+  .score-section-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: white; }
+  .score-section-pct { font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+
+  .scroll-top {
+    position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px;
+    background: var(--ink); color: white; border: none; border-radius: 50%;
+    font-size: 18px; cursor: pointer; box-shadow: var(--shadow-md);
+    opacity: 0; transition: opacity 0.3s; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+  }
+  .scroll-top.visible { opacity: 1; }
+  .scroll-top:hover { background: var(--accent); }
+
+  @media (max-width: 620px) {
+    .hero { padding: 36px 20px 32px; }
+    .main { padding: 24px 20px 60px; }
+    .progress-wrap { padding: 10px 20px; }
+    .tab-btn { font-size: 12px; padding: 0 12px; }
+    .hero-stats { gap: 20px; }
+    .q-card { padding: 16px; }
+    .score-card { padding: 24px 20px; }
+    .score-big { font-size: 40px; }
+  }
 </style>
 </head>
 <body>
@@ -223,57 +350,221 @@
   <div class="hero-inner">
     <div class="hero-eyebrow">Capital University — Computer Science Department</div>
     <h1 class="hero-title">Computer Networks <em>1</em></h1>
-    <p class="hero-sub">OSI · DNS · NAT · IP Subnetting & CIDR</p>
+    <p class="hero-sub">Lectures 1, 2, 3 &nbsp;·&nbsp; OSI Model · DNS · NAT &nbsp;·&nbsp; Practice Quiz</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">105</span><span class="stat-label">Questions</span></div>
+      <div class="stat"><span class="stat-num">25</span><span class="stat-label">Easy</span></div>
+      <div class="stat"><span class="stat-num">35</span><span class="stat-label">Medium</span></div>
+      <div class="stat"><span class="stat-num">30</span><span class="stat-label">Hard</span></div>
+      <div class="stat"><span class="stat-num">15</span><span class="stat-label">Subnetting</span></div>
+    </div>
+    <div class="hero-disclaimer">⚠ Disclaimer: <span>All questions were answerd by Gemini AI.</span></div>
   </div>
 </header>
 
 <div class="tabs-wrap">
   <div class="tabs-inner">
-    <button class="tab-btn easy active" onclick="switchTab('easy')"><span class="tab-dot easy"></span> Easy</button>
-    <button class="tab-btn medium" onclick="switchTab('medium')"><span class="tab-dot medium"></span> Medium</button>
-    <button class="tab-btn hard" onclick="switchTab('hard')"><span class="tab-dot hard"></span> Hard</button>
-    <button class="tab-btn ch2" onclick="switchTab('ch2')"><span class="tab-dot ch2"></span> Subnetting Problems</button>
+    <button class="tab-btn easy active" onclick="switchTab('easy')">
+      <span class="tab-dot easy"></span> Easy (1–25)
+    </button>
+    <button class="tab-btn medium" onclick="switchTab('medium')">
+      <span class="tab-dot medium"></span> Medium (26–60)
+    </button>
+    <button class="tab-btn hard" onclick="switchTab('hard')">
+      <span class="tab-dot hard"></span> Hard (61–90)
+    </button>
+    <button class="tab-btn ch2" onclick="switchTab('ch2')">
+      <span class="tab-dot ch2"></span> Subnetting Problems
+    </button>
   </div>
 </div>
 
 <div class="progress-wrap">
   <div class="progress-inner">
-    <span class="progress-text" id="prog-text">0 / 0 answered</span>
+    <span class="progress-text" id="prog-text">0 / 25 answered</span>
     <div class="progress-track"><div class="progress-fill easy" id="prog-fill"></div></div>
-    <span class="progress-pct" id="prog-pct">0%</span>
+    <span class="progress-pct easy" id="prog-pct">0%</span>
   </div>
 </div>
 
 <main class="main">
+
+  <!-- EASY -->
   <div class="section-panel active" id="panel-easy">
-    <div class="section-header"><span class="section-badge easy">Easy</span><div class="section-title">Fundamentals</div></div>
+    <div class="section-header">
+      <span class="section-badge easy">Easy</span>
+      <div>
+        <div class="section-title">Fundamentals</div>
+        <div class="section-meta">Questions 1 – 25 · OSI basics, DNS records, NAT types</div>
+      </div>
+    </div>
     <div id="easy-container"></div>
-    <div class="actions"><button class="btn-primary" onclick="submitSection('easy')">View Score</button></div>
-    <div class="score-card" id="score-easy"><div class="score-big" id="score-pct-easy">—</div></div>
+    <div class="actions">
+      <button class="btn-primary" onclick="submitSection('easy')">View Score</button>
+      <button class="btn-secondary" onclick="resetSection('easy')">Reset</button>
+    </div>
+    <div class="score-card" id="score-easy">
+      <div class="score-card-inner">
+        <div class="score-top">
+          <div>
+            <div class="score-label">Section Score</div>
+            <div class="score-big" id="score-pct-easy">—</div>
+            <div class="score-sub" id="score-sub-easy">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="score-label">Grade</div>
+            <div class="score-grade" id="score-grade-easy">—</div>
+          </div>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-section">
+            <div class="score-section-label">Correct</div>
+            <div class="score-section-val" id="score-correct-easy">—</div>
+            <div class="score-section-pct" id="score-acc-easy">—</div>
+          </div>
+          <div class="score-section">
+            <div class="score-section-label">Unanswered</div>
+            <div class="score-section-val" id="score-skip-easy">—</div>
+            <div class="score-section-pct" style="color:rgba(255,255,255,0.35);">not yet answered</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- MEDIUM -->
   <div class="section-panel" id="panel-medium">
-    <div class="section-header"><span class="section-badge medium">Medium</span><div class="section-title">Intermediate</div></div>
+    <div class="section-header">
+      <span class="section-badge medium">Medium</span>
+      <div>
+        <div class="section-title">Intermediate</div>
+        <div class="section-meta">Questions 26 – 60 · DNS hierarchy, NAT behavior, OSI layers</div>
+      </div>
+    </div>
     <div id="medium-container"></div>
-    <div class="actions"><button class="btn-primary" onclick="submitSection('medium')">View Score</button></div>
-    <div class="score-card" id="score-medium"><div class="score-big" id="score-pct-medium">—</div></div>
+    <div class="actions">
+      <button class="btn-primary" onclick="submitSection('medium')">View Score</button>
+      <button class="btn-secondary" onclick="resetSection('medium')">Reset</button>
+    </div>
+    <div class="score-card" id="score-medium">
+      <div class="score-card-inner">
+        <div class="score-top">
+          <div>
+            <div class="score-label">Section Score</div>
+            <div class="score-big" id="score-pct-medium">—</div>
+            <div class="score-sub" id="score-sub-medium">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="score-label">Grade</div>
+            <div class="score-grade" id="score-grade-medium">—</div>
+          </div>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-section">
+            <div class="score-section-label">Correct</div>
+            <div class="score-section-val" id="score-correct-medium">—</div>
+            <div class="score-section-pct" id="score-acc-medium">—</div>
+          </div>
+          <div class="score-section">
+            <div class="score-section-label">Unanswered</div>
+            <div class="score-section-val" id="score-skip-medium">—</div>
+            <div class="score-section-pct" style="color:rgba(255,255,255,0.35);">not yet answered</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- HARD -->
   <div class="section-panel" id="panel-hard">
-    <div class="section-header"><span class="section-badge hard">Hard</span><div class="section-title">Advanced</div></div>
+    <div class="section-header">
+      <span class="section-badge hard">Hard</span>
+      <div>
+        <div class="section-title">Advanced</div>
+        <div class="section-meta">Questions 61 – 90 · Scenario-based, security, analysis</div>
+      </div>
+    </div>
     <div id="hard-container"></div>
-    <div class="actions"><button class="btn-primary" onclick="submitSection('hard')">View Score</button></div>
-    <div class="score-card" id="score-hard"><div class="score-big" id="score-pct-hard">—</div></div>
+    <div class="actions">
+      <button class="btn-primary" onclick="submitSection('hard')">View Score</button>
+      <button class="btn-secondary" onclick="resetSection('hard')">Reset</button>
+    </div>
+    <div class="score-card" id="score-hard">
+      <div class="score-card-inner">
+        <div class="score-top">
+          <div>
+            <div class="score-label">Section Score</div>
+            <div class="score-big" id="score-pct-hard">—</div>
+            <div class="score-sub" id="score-sub-hard">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="score-label">Grade</div>
+            <div class="score-grade" id="score-grade-hard">—</div>
+          </div>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-section">
+            <div class="score-section-label">Correct</div>
+            <div class="score-section-val" id="score-correct-hard">—</div>
+            <div class="score-section-pct" id="score-acc-hard">—</div>
+          </div>
+          <div class="score-section">
+            <div class="score-section-label">Unanswered</div>
+            <div class="score-section-val" id="score-skip-hard">—</div>
+            <div class="score-section-pct" style="color:rgba(255,255,255,0.35);">not yet answered</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- SUBNETTING -->
   <div class="section-panel" id="panel-ch2">
-    <div class="section-header"><span class="section-badge ch2">Subnetting & CIDR</span><div class="section-title">Practice Problems</div></div>
+    <div class="section-header">
+      <span class="section-badge ch2">Subnetting & CIDR</span>
+      <div>
+        <div class="section-title">Practice Problems</div>
+        <div class="section-meta">15 Applied Calculation Problems</div>
+      </div>
+    </div>
     <div class="inner-disclaimer">⚠ The problems in this section have been created and answered by AI.</div>
     <div id="ch2-container"></div>
-    <div class="actions"><button class="btn-primary" onclick="submitSection('ch2')">View Score</button></div>
-    <div class="score-card" id="score-ch2"><div class="score-big" id="score-pct-ch2">—</div></div>
+    <div class="actions">
+      <button class="btn-primary" onclick="submitSection('ch2')">View Score</button>
+      <button class="btn-secondary" onclick="resetSection('ch2')">Reset</button>
+    </div>
+    <div class="score-card" id="score-ch2">
+      <div class="score-card-inner">
+        <div class="score-top">
+          <div>
+            <div class="score-label">Section Score</div>
+            <div class="score-big" id="score-pct-ch2">—</div>
+            <div class="score-sub" id="score-sub-ch2">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="score-label">Grade</div>
+            <div class="score-grade" id="score-grade-ch2">—</div>
+          </div>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-section">
+            <div class="score-section-label">Correct</div>
+            <div class="score-section-val" id="score-correct-ch2">—</div>
+            <div class="score-section-pct" id="score-acc-ch2">—</div>
+          </div>
+          <div class="score-section">
+            <div class="score-section-label">Unanswered</div>
+            <div class="score-section-val" id="score-skip-ch2">—</div>
+            <div class="score-section-pct" style="color:rgba(255,255,255,0.35);">not yet answered</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 </main>
+
+<button class="scroll-top" id="scroll-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 const easyQs = [
@@ -395,13 +686,24 @@ const ch2Qs = [
 
 const sections = {
   easy:   { qs: easyQs,   answered: {}, correct: 0, built: false },
-  medium: { qs: mediumQs, answered: {}, correct: 0, built: false },
-  hard:   { qs: hardQs,   answered: {}, correct: 0, built: false },
-  ch2:    { qs: ch2Qs,    answered: {}, correct: 0, built: false }
+  medium: { mediumQs, qs: mediumQs, answered: {}, correct: 0, built: false },
+  hard:   { qs: hardQs,  answered: {}, correct: 0, built: false },
+  ch2:    { qs: ch2Qs,   answered: {}, correct: 0, built: false },
 };
-
 const letters = ['A','B','C','D'];
 let currentTab = 'easy';
+
+function getGrade(pct) {
+  if (pct >= 90) return 'A+';
+  if (pct >= 85) return 'A';
+  if (pct >= 80) return 'B+';
+  if (pct >= 75) return 'B';
+  if (pct >= 70) return 'C+';
+  if (pct >= 65) return 'C';
+  if (pct >= 60) return 'D+';
+  if (pct >= 50) return 'D';
+  return 'F';
+}
 
 function toggleHint(tab, idx) {
     const el = document.getElementById(`${tab}-hint-${idx}`);
@@ -413,11 +715,11 @@ function updateProgress(tab) {
   const total = sec.qs.length;
   const count = Object.keys(sec.answered).length;
   const pct = Math.round(count / total * 100);
-  const fill = document.getElementById('prog-fill');
-  fill.style.width = pct + '%';
-  fill.className = 'progress-fill ' + tab;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-fill').className = 'progress-fill ' + tab;
   document.getElementById('prog-text').textContent = count + ' / ' + total + ' answered';
   document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-pct').className = 'progress-pct ' + tab;
 }
 
 function buildSection(tab) {
@@ -426,12 +728,12 @@ function buildSection(tab) {
   sec.built = true;
   const container = document.getElementById(tab + '-container');
   sec.qs.forEach((item, i) => {
+    const globalNum = tab === 'easy' ? i+1 : tab === 'medium' ? i+26 : tab === 'hard' ? i+61 : i+1;
     const card = document.createElement('div');
     card.className = 'q-card';
     card.id = tab + '-card-' + i;
-    const globalNum = tab === 'easy' ? i+1 : tab === 'medium' ? i+26 : tab === 'hard' ? i+61 : i+1;
-    
-    const hintHtml = item.hint ? `
+
+    const hintHtml = (tab === 'ch2' && item.hint) ? `
         <div class="hint-container">
             <button class="hint-btn" onclick="toggleHint('${tab}', ${i})">💡 Show Hint</button>
             <div class="hint-content" id="${tab}-hint-${i}">${item.hint}</div>
@@ -440,15 +742,15 @@ function buildSection(tab) {
 
     const opts = item.opts.map((o, j) => `
       <label class="option" id="${tab}-opt-${i}-${j}" onclick="selectOpt('${tab}',${i},${j})">
-        <input type="radio" name="${tab}-${i}">
+        <input type="radio" name="${tab}-${i}" value="${j}">
+        <div class="option-dot"></div>
         <span class="option-letter">${letters[j]})</span>
         <span class="option-text">${o}</span>
       </label>`).join('');
-
     card.innerHTML = `
       <div class="q-header">
         <span class="q-badge">${globalNum}</span>
-        <span class="q-text">${item.q.replace(/\n/g, '<br>')}</span>
+        <span class="q-text">${item.q}</span>
       </div>
       <div class="options">${opts}</div>
       ${hintHtml}
@@ -462,32 +764,59 @@ function selectOpt(tab, qi, oi) {
   if (sec.answered[qi] !== undefined) return;
   sec.answered[qi] = oi;
   const item = sec.qs[qi];
-  
   document.getElementById(`${tab}-opt-${qi}-${oi}`).classList.add('selected');
   updateProgress(tab);
 
+  // reveal
   const card = document.getElementById(tab + '-card-' + qi);
+  const fb = document.getElementById(tab + '-fb-' + qi);
   item.opts.forEach((_, j) => {
     const opt = document.getElementById(`${tab}-opt-${qi}-${j}`);
     opt.style.pointerEvents = 'none';
     if (j === item.ans) opt.classList.add('correct-opt');
-    else if (j === oi && oi !== item.ans) opt.classList.add('wrong-opt');
+    else if (j === oi && oi !== item.ans) { opt.classList.add('wrong-opt'); opt.classList.remove('selected'); }
   });
-
   if (oi === item.ans) {
-      sec.correct++;
-      card.classList.add('correct-card');
+    sec.correct++;
+    card.classList.add('correct-card');
+    fb.textContent = '✓ Correct!';
+    fb.className = 'q-feedback show-correct';
   } else {
-      card.classList.add('wrong-card');
+    card.classList.add('wrong-card');
+    fb.textContent = '✗ Incorrect — correct: ' + letters[item.ans] + ') ' + item.opts[item.ans];
+    fb.className = 'q-feedback show-wrong';
   }
+  updateScoreCard(tab);
+}
+
+function updateScoreCard(tab) {
+  const sec = sections[tab];
+  const total = sec.qs.length;
+  const totalAns = Object.keys(sec.answered).length;
+  const pct = totalAns > 0 ? Math.round(sec.correct / totalAns * 100) : 0;
+  document.getElementById('score-' + tab).style.display = 'block';
+  document.getElementById('score-pct-' + tab).textContent = pct + '%';
+  document.getElementById('score-sub-' + tab).textContent = sec.correct + ' correct out of ' + totalAns + ' answered';
+  document.getElementById('score-grade-' + tab).textContent = getGrade(pct);
+  document.getElementById('score-correct-' + tab).textContent = sec.correct + ' / ' + totalAns;
+  document.getElementById('score-acc-' + tab).textContent = totalAns > 0 ? pct + '% accuracy' : '—';
+  document.getElementById('score-skip-' + tab).textContent = total - totalAns;
 }
 
 function submitSection(tab) {
-  const sec = sections[tab];
-  const pct = Math.round((sec.correct / sec.qs.length) * 100);
-  document.getElementById('score-' + tab).style.display = 'block';
-  document.getElementById('score-pct-' + tab).textContent = pct + '%';
   document.getElementById('score-' + tab).scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetSection(tab) {
+  const sec = sections[tab];
+  sec.answered = {};
+  sec.correct = 0;
+  sec.built = false;
+  document.getElementById(tab + '-container').innerHTML = '';
+  document.getElementById('score-' + tab).style.display = 'none';
+  buildSection(tab);
+  updateProgress(tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function switchTab(tab) {
@@ -501,6 +830,11 @@ function switchTab(tab) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+window.addEventListener('scroll', () => {
+  document.getElementById('scroll-btn').classList.toggle('visible', window.scrollY > 400);
+});
+
+// init
 buildSection('easy');
 updateProgress('easy');
 </script>
